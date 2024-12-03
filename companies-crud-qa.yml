@@ -2,6 +2,6 @@ db:
   username: root-qa
   maximum-pool-size: 5
   connection-timeout: 20000
-  url: jdbc:postgresql://localhost:5435/companies-qa
+  url: jdbc:postgresql://localhost:5436/companies-qa
   password: '1234'
   driverClassName: org.postgresql.Driver
