@@ -1,0 +1,52 @@
+server:
+  port: 8092
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: micro-service-auth
+
+  # ==== DATABASE (Render PostgreSQL) ====
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://dpg-d4ieee4hg0os739sbkf0-a.virginia-postgres.render.com:5432/proyecto_microservicesdb
+    username: carta87
+    password: QxSTq1RBRRCrRQmD7qFUmYM87ASwGlM0
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  # ==== CONFIG SERVER ====
+  cloud:
+    config:
+      uri: https://microservice-config.onrender.com
+      fail-fast: true
+      retry:
+        initial-interval: 2000
+        max-attempts: 20
+        max-interval: 10000
+        multiplier: 1.5
+
+eureka:
+  instance:
+    prefer-ip-address: true   # Para Render
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: https://microservice-eureka.onrender.com/eureka/
+
+jw:
+  secret:
+    key: 586E3272357538782F413F4428472B4B6250655368566B597033733676397924
+  time:
+    expiration: 3600000
+
+springdoc:
+  api-docs:
+    version: openapi_3_1
+  cache:
+    disabled: true

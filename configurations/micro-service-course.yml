@@ -1,0 +1,51 @@
+server:
+  port: 9090
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: micro-service-course
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://dpg-d4ieee4hg0os739sbkf0-a.virginia-postgres.render.com:5432/proyecto_microservicesdb
+    username: carta87
+    password: QxSTq1RBRRCrRQmD7qFUmYM87ASwGlM0
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  cloud:
+    config:
+      uri: https://microservice-config.onrender.com
+      fail-fast: true
+      retry:
+        initial-interval: 2000
+        max-attempts: 20
+        max-interval: 10000
+        multiplier: 1.5
+
+eureka:
+  instance:
+    prefer-ip-address: true  # Render no usa localhost
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: https://microservice-eureka.onrender.com/eureka/
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: TRACE
+
+springdoc:
+  api-docs:
+    version: openapi_3_1
+  cache:
+    disabled: true

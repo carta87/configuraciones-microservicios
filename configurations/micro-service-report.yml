@@ -1,0 +1,25 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: micro-service-report
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://dpg-d4ieee4hg0os739sbkf0-a.virginia-postgres.render.com:5432/proyecto_microservicesdb
+    username: carta87
+    password: QxSTq1RBRRCrRQmD7qFUmYM87ASwGlM0
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

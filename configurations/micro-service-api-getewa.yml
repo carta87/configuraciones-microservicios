@@ -1,0 +1,91 @@
+server:
+  port: ${PORT:0}
+
+jw:
+  secret:
+    key: 586E3272357538782F413F4428472B4B6250655368566B597033733676397924
+
+spring:
+  application:
+    name: micro-service-api-getewa
+
+  config:
+    import: "optional:configserver:https://microservice-config-2irc.onrender.com"
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+      globalcors:
+        corsConfigurations:
+          "[/**]":
+            allowedOrigins:
+              - "https://frontend-microservicios.onrender.com"
+              - "http://localhost:4200"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+
+      routes:
+        - id: student-micro-service
+          uri: lb://micro-service-student
+          predicates:
+            - Path=/micro-services/student-micro/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/micro-services/student-micro/(?<path>.*), /${path}
+
+        - id: course-micro-service
+          uri: lb://micro-service-course
+          predicates:
+            - Path=/micro-services/course-micro/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/micro-services/course-micro/(?<path>.*), /${path}
+
+        - id: auth-micro-service
+          uri: lb://micro-service-auth
+          predicates:
+            - Path=/micro-services/auth-micro/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/micro-services/auth-micro/(?<path>.*), /${path}
+
+        - id: openapi-proxy
+          uri: https://demos.springdoc.org
+          predicates:
+            - Path=/micro-services/v3/api-docs/**
+          filters:
+            - RewritePath=/micro-services/v3/api-docs/(?<path>.*), /micro-services/${path}/v3/api-docs
+
+        - id: openapi
+          uri: http://localhost:${server.port}
+          predicates:
+            - Path=/v3/api-docs/**
+          filters:
+            - RewritePath=/v3/api-docs/(?<path>.*), /${path}/v3/api-docs
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: https://microservice-eureka-v1.onrender.com/eureka/
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: TRACE
+
+springdoc:
+  cache:
+    disabled: true
+  swagger-ui:
+    use-root-path: true
+  api-docs:
+    version: openapi_3_1

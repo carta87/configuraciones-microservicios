@@ -1,0 +1,21 @@
+server:
+  port: ${PORT:8761}
+
+spring:
+  application:
+    name: micro-service-eureka
+  cloud:
+    config:
+      uri: https://microservice-config-2irc.onrender.com
+      fail-fast: true
+      retry:
+        max-attempts: 10
+        initial-interval: 2000
+        multiplier: 1.5
+
+eureka:
+  client:
+    register-with-eureka: false     # Eureka NO se registra a sí mismo
+    fetch-registry: false
+    service-url:
+      defaultZone: ${RENDER_EXTERNAL_URL:https://microservice-eureka-v1.onrender.com}/eureka/
