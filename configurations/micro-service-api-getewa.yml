@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:0}
+  port: ${PORT}
 
 jw:
   secret:
@@ -60,12 +60,13 @@ spring:
           filters:
             - RewritePath=/micro-services/v3/api-docs/(?<path>.*), /micro-services/${path}/v3/api-docs
 
-        - id: openapi
-          uri: http://localhost:${server.port}
+        # Ruta corregida para el gateway (si la quieres)
+        - id: openapi-gateway
+          uri: http://localhost
           predicates:
-            - Path=/v3/api-docs/**
+            - Path=/v3/api-docs
           filters:
-            - RewritePath=/v3/api-docs/(?<path>.*), /${path}/v3/api-docs
+            - SetPath=/v3/api-docs
 
 eureka:
   client:
